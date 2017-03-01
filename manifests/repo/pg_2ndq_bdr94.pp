@@ -1,9 +1,9 @@
-# = Class: yum::repo::2ndq_bdr94
+# = Class: yum::repo::pg_2ndq_bdr94
 #
 # This class installs the postgresql 9.4 repo from 2ndquadrant that includes the
 # bi-directional replication patches.
 #
-class yum::repo::2ndq_bdr94 {
+class yum::repo::pg_2ndq_bdr94 {
   yum::managed_yumrepo { 'postgresql-bdr94-2ndquadrant':
     descr         => 'PostgreSQL 9.4 with BDR for RHEL $releasever - $basearch',
     baseurl       => 'http://packages.2ndquadrant.com/postgresql-bdr94-2ndquadrant/yum/redhat-$releasever-$basearch',
