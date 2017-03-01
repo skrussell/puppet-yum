@@ -17,7 +17,7 @@ class yum::repo::pg_2ndq_bdr94 {
     baseurl        => 'http://packages.2ndquadrant.com/postgresql-bdr94-2ndquadrant/yum/redhat-$releasever',
     enabled        => 0,
     gpgcheck       => 1,
-	failovermethod => 'priority'
+	failovermethod => 'priority',
     gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-2NDQ-BDR-94',
     gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-2NDQ-BDR-94'
   }
