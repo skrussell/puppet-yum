@@ -2,7 +2,7 @@
 #
 # This class installs the puppet5 repo
 #
-class yum::repo::puppetlabs5 (
+class yum::repo::puppet5 (
   $baseurl    = '',
   $collection = '1',
   $priority   = 99,
