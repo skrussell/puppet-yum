@@ -18,6 +18,7 @@ class yum::repo::centos7 (
 ) {
 
   if $mirror_url {
+	include yum::disable_fastest
     validate_re(
       $mirror_url,
       '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\/[\w~-]*)*$',
