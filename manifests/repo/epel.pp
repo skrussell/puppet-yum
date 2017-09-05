@@ -65,7 +65,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - \$basearch",
     baseurl        => $baseurl_epel,
-    mirrorlist     => "https://mirrors.fedoraproject.org/mirrorlist?repo=epel-${osver[0]}&arch=\$basearch",
+    mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=epel-${osver[0]}&arch=\$basearch",
     enabled        => 1,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -77,7 +77,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-debuginfo':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - \$basearch - Debug",
     baseurl        => $baseurl_epel_debuginfo,
-    mirrorlist     => "https://mirrors.fedoraproject.org/mirrorlist?repo=epel-${osver[0]}&arch=\$basearch",
+    mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=epel-${osver[0]}&arch=\$basearch",
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -88,7 +88,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-source':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - \$basearch - Source",
     baseurl        => $baseurl_epel_source,
-    mirrorlist     => "https://mirrors.fedoraproject.org/mirrorlist?repo=epel-source-${osver[0]}&arch=\$basearch",
+    mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=epel-source-${osver[0]}&arch=\$basearch",
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -99,7 +99,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-testing':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - Testing - \$basearch",
     baseurl        => $baseurl_epel_testing,
-    mirrorlist     => "https://mirrors.fedoraproject.org/mirrorlist?repo=testing-epel${osver[0]}&arch=\$basearch",
+    mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=testing-epel${osver[0]}&arch=\$basearch",
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -110,7 +110,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-testing-debuginfo':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - Testing - \$basearch - Debug",
     baseurl        => $baseurl_epel_testing_debuginfo,
-    mirrorlist     => "https://mirrors.fedoraproject.org/mirrorlist?repo=testing-debug-epel${osver[0]}&arch=\$basearch",
+    mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel${osver[0]}&arch=\$basearch",
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -121,7 +121,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-testing-source':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - Testing - \$basearch - Source",
     baseurl        => $baseurl_epel_testing_source,
-    mirrorlist     => "https://mirrors.fedoraproject.org/mirrorlist?repo=testing-source-epel${osver[0]}&arch=\$basearch",
+    mirrorlist     => "https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel${osver[0]}&arch=\$basearch",
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
