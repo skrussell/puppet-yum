@@ -4,6 +4,7 @@ define yum::managed_yumrepo (
   $descr           = 'absent',
   $baseurl         = 'absent',
   $mirrorlist      = 'absent',
+  $metalist        = 'absent',
   $enabled         = 0,
   $gpgcheck        = 0,
   $gpgkey          = 'absent',
@@ -30,6 +31,10 @@ define yum::managed_yumrepo (
     if ! defined(Yum::Plugin['protectbase']) {
       yum::plugin { 'protectbase': }
     }
+  }
+
+  if $mirrorlist != 'absent' and $metalist != 'absent' {
+    fail('Should not supply metalink and mirrorlist arguments')
   }
 
   if ! defined(File["/etc/yum.repos.d/${name}.repo"]) {
@@ -67,6 +72,7 @@ define yum::managed_yumrepo (
       descr           => $descr,
       baseurl         => $baseurl,
       mirrorlist      => $mirrorlist,
+      metalink        => $metalink,
       enabled         => $enabled,
       gpgcheck        => $gpgcheck,
       gpgkey          => $gpgkey,
