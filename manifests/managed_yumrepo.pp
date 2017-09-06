@@ -4,7 +4,7 @@ define yum::managed_yumrepo (
   $descr           = 'absent',
   $baseurl         = 'absent',
   $mirrorlist      = 'absent',
-  $metalist        = 'absent',
+  $metalink        = 'absent',
   $enabled         = 0,
   $gpgcheck        = 0,
   $gpgkey          = 'absent',
@@ -33,7 +33,7 @@ define yum::managed_yumrepo (
     }
   }
 
-  if $mirrorlist != 'absent' and $metalist != 'absent' {
+  if $mirrorlist != 'absent' and $metalink != 'absent' {
     fail('Should not supply metalink and mirrorlist arguments')
   }
 
