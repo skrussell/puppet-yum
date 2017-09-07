@@ -7,7 +7,7 @@ class yum::repo::erlang {
     descr          => 'Erlang solutions official repository for RHEL and Cent OS - $basearch',
     baseurl        => 'http://packages.erlang-solutions.com/rpm/centos/$releasever/$basearch',
     enabled        => 1,
-	failovermethod => 'priority'
+	failovermethod => 'priority',
 	priority       => 1,
     gpgcheck       => 1,
     gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-erlang',
