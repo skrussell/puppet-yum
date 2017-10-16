@@ -22,7 +22,7 @@ class yum::repo::puppet5 (
   }
 
   yum::managed_yumrepo { 'puppet5':
-    descr          => "Puppet 5 Repository el ${release} - $basearch",
+    descr          => "Puppet 5 Repository el ${release} - \$basearch",
     baseurl        => $real_baseurl,
     enabled        => 1,
     gpgcheck       => 1,
