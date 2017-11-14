@@ -9,7 +9,8 @@ class yum::repo::rabbitmq_server {
     enabled        => 1,
 	failovermethod => 'priority',
 	priority       => 1,
-    gpgcheck       => 1,
+    gpgcheck       => 0,
+	repo_gpgcheck  => 1,
     gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rabbitmq',
     gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-rabbitmq'
   }
@@ -19,7 +20,8 @@ class yum::repo::rabbitmq_server {
     enabled        => 1,
 	failovermethod => 'priority',
 	priority       => 1,
-    gpgcheck       => 1,
+    gpgcheck       => 0,
+	repo_gpgcheck  => 1,
     gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rabbitmq',
     gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-rabbitmq'
   }
