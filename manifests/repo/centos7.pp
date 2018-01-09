@@ -49,7 +49,7 @@ class yum::repo::centos7 (
   yum::managed_yumrepo { 'base':
     descr          => 'CentOS-$releasever - Base',
     baseurl        => $baseurl_base,
-    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os',
+    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra',
     failovermethod => 'priority',
     enabled        => 1,
     gpgcheck       => 1,
@@ -61,7 +61,7 @@ class yum::repo::centos7 (
   yum::managed_yumrepo { 'updates':
     descr          => 'CentOS-$releasever - Updates',
     baseurl        => $baseurl_updates,
-    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates',
+    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra',
     failovermethod => 'priority',
     enabled        => 1,
     gpgcheck       => 1,
@@ -72,7 +72,7 @@ class yum::repo::centos7 (
   yum::managed_yumrepo { 'extras':
     descr          => 'CentOS-$releasever - Extras',
     baseurl        => $baseurl_extras,
-    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras',
+    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra',
     failovermethod => 'priority',
     enabled        => 1,
     gpgcheck       => 1,
@@ -83,7 +83,7 @@ class yum::repo::centos7 (
   yum::managed_yumrepo { 'centosplus':
     descr          => 'CentOS-$releasever - Centosplus',
     baseurl        => $baseurl_centosplus,
-    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus',
+    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra',
     failovermethod => 'priority',
     enabled        => 1,
     gpgcheck       => 1,
