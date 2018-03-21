@@ -24,6 +24,19 @@ class yum::repo::epel (
       '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\:[0-9]{1,5})?(?:\/[\w\.~-]*)*$',
       '$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash.'
     )
+	$metalink_epel = undef
+	$metalink_epel_debuginfo = undef
+	$metalink_epel_source = undef
+	$metalink_epel_testing = undef
+	$metalink_epel_testing_debuginfo = undef
+	$metalink_epel_testing_source = undef
+  } else {
+	$metalink_epel = "https://mirrors.fedoraproject.org/metalink?repo=epel-${osver[0]}&arch=\$basearch"
+	$metalink_epel_debuginfo = "https://mirrors.fedoraproject.org/metalink?repo=epel-debug-${osver[0]}&arch=\$basearch"
+	$metalink_epel_source = "https://mirrors.fedoraproject.org/metalink?repo=epel-source-${osver[0]}&arch=\$basearch"
+	$metalink_epel_testing = "https://mirrors.fedoraproject.org/metalink?repo=testing-epel${osver[0]}&arch=\$basearch"
+	$metalink_epel_testing_debuginfo = "https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel${osver[0]}&arch=\$basearch"
+	$metalink_epel_testing_source = "https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel${osver[0]}&arch=\$basearch"
   }
 
   $osver = $::operatingsystem ? {
@@ -65,7 +78,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - \$basearch",
     baseurl        => $baseurl_epel,
-    metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-${osver[0]}&arch=\$basearch",
+    metalink       => $metalink_epel,
     enabled        => 1,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -77,7 +90,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-debuginfo':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - \$basearch - Debug",
     baseurl        => $baseurl_epel_debuginfo,
-    metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-debug-${osver[0]}&arch=\$basearch",
+    metalink       => $metalink_epel_debuginfo,
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -88,7 +101,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-source':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - \$basearch - Source",
     baseurl        => $baseurl_epel_source,
-    metalink       => "https://mirrors.fedoraproject.org/metalink?repo=epel-source-${osver[0]}&arch=\$basearch",
+    metalink       => $metalink_epel_source,
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -99,7 +112,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-testing':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - Testing - \$basearch",
     baseurl        => $baseurl_epel_testing,
-    metalink       => "https://mirrors.fedoraproject.org/metalink?repo=testing-epel${osver[0]}&arch=\$basearch",
+    metalink       => $metalink_epel_testing,
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -110,7 +123,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-testing-debuginfo':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - Testing - \$basearch - Debug",
     baseurl        => $baseurl_epel_testing_debuginfo,
-    metalink       => "https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel${osver[0]}&arch=\$basearch",
+    metalink       => $metalink_epel_testing_debuginfo,
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
@@ -121,7 +134,7 @@ class yum::repo::epel (
   yum::managed_yumrepo { 'epel-testing-source':
     descr          => "Extra Packages for Enterprise Linux ${osver[0]} - Testing - \$basearch - Source",
     baseurl        => $baseurl_epel_testing_source,
-    metalink       => "https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel${osver[0]}&arch=\$basearch",
+    metalink       => $metalink_epel_testing_source,
     enabled        => 0,
     gpgcheck       => 1,
     failovermethod => 'priority',
