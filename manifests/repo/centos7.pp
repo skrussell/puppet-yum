@@ -24,10 +24,10 @@ class yum::repo::centos7 (
       '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\/[\w\.~-]*)*$',
       '$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash.'
     )
-    $baseurl_base = "${mirror_url}/\$releasever/os/\$basearch/",
-    $baseurl_updates = "${mirror_url}/\$releasever/updates/\$basearch/",
-    $baseurl_extras = "${mirror_url}/\$releasever/extras/\$basearch/",
-    $baseurl_centosplus = "${mirror_url}/\$releasever/centosplus/\$basearch/",
+    $baseurl_base = "${mirror_url}/\$releasever/os/\$basearch/"
+    $baseurl_updates = "${mirror_url}/\$releasever/updates/\$basearch/"
+    $baseurl_extras = "${mirror_url}/\$releasever/extras/\$basearch/"
+    $baseurl_centosplus = "${mirror_url}/\$releasever/centosplus/\$basearch/"
     $mirrorlist_base = undef
     $mirrorlist_updates = undef
     $mirrorlist_extras = undef
