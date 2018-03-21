@@ -17,6 +17,12 @@ class yum::repo::epel (
   $mirror_url = undef
 ) {
 
+  $osver = $::operatingsystem ? {
+    'Amazon'    => [ '6' ],
+    'XenServer' => [ '5' ],
+    default     => split($::operatingsystemrelease, '[.]')
+  }
+
   if $mirror_url {
 	include yum::disable_fastest
     validate_re(
@@ -24,6 +30,12 @@ class yum::repo::epel (
       '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\:[0-9]{1,5})?(?:\/[\w\.~-]*)*$',
       '$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash.'
     )
+    $baseurl_epel = "${mirror_url}/${osver[0]}/\$basearch/"
+    $baseurl_epel_debuginfo = "${mirror_url}/${osver[0]}/\$basearch/debug"
+    $baseurl_epel_source = "${mirror_url}/${osver[0]}/SRPMS/"
+    $baseurl_epel_testing = "${mirror_url}/testing/${osver[0]}/\$basearch/"
+    $baseurl_epel_testing_debuginfo = "${mirror_url}/testing/${osver[0]}/\$basearch/debug"
+    $baseurl_epel_testing_source = "${mirror_url}/testing/${osver[0]}/SRPMS/"
 	$metalink_epel = undef
 	$metalink_epel_debuginfo = undef
 	$metalink_epel_source = undef
@@ -31,48 +43,18 @@ class yum::repo::epel (
 	$metalink_epel_testing_debuginfo = undef
 	$metalink_epel_testing_source = undef
   } else {
+    $baseurl_epel = undef
+    $baseurl_epel_debuginfo = undef
+    $baseurl_epel_source = undef
+    $baseurl_epel_testing = undef
+    $baseurl_epel_testing_debuginfo = undef
+    $baseurl_epel_testing_source = undef
 	$metalink_epel = "https://mirrors.fedoraproject.org/metalink?repo=epel-${osver[0]}&arch=\$basearch"
 	$metalink_epel_debuginfo = "https://mirrors.fedoraproject.org/metalink?repo=epel-debug-${osver[0]}&arch=\$basearch"
 	$metalink_epel_source = "https://mirrors.fedoraproject.org/metalink?repo=epel-source-${osver[0]}&arch=\$basearch"
 	$metalink_epel_testing = "https://mirrors.fedoraproject.org/metalink?repo=testing-epel${osver[0]}&arch=\$basearch"
 	$metalink_epel_testing_debuginfo = "https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel${osver[0]}&arch=\$basearch"
 	$metalink_epel_testing_source = "https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel${osver[0]}&arch=\$basearch"
-  }
-
-  $osver = $::operatingsystem ? {
-    'Amazon'    => [ '6' ],
-    'XenServer' => [ '5' ],
-    default     => split($::operatingsystemrelease, '[.]')
-  }
-
-  $baseurl_epel = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/${osver[0]}/\$basearch/",
-  }
-
-  $baseurl_epel_debuginfo = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/${osver[0]}/\$basearch/debug",
-  }
-
-  $baseurl_epel_source = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/${osver[0]}/SRPMS/",
-  }
-
-  $baseurl_epel_testing = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/testing/${osver[0]}/\$basearch/",
-  }
-
-  $baseurl_epel_testing_debuginfo = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/testing/${osver[0]}/\$basearch/debug",
-  }
-
-  $baseurl_epel_testing_source = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/testing/${osver[0]}/SRPMS/",
   }
 
   yum::managed_yumrepo { 'epel':

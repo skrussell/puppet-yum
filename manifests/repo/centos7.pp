@@ -24,32 +24,29 @@ class yum::repo::centos7 (
       '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\/[\w\.~-]*)*$',
       '$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash.'
     )
-  }
-
-  $baseurl_base = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/\$releasever/os/\$basearch/",
-  }
-
-  $baseurl_updates = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/\$releasever/updates/\$basearch/",
-  }
-
-  $baseurl_extras = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/\$releasever/extras/\$basearch/",
-  }
-
-  $baseurl_centosplus = $mirror_url ? {
-    undef   => undef,
-    default => "${mirror_url}/\$releasever/centosplus/\$basearch/",
+    $baseurl_base = "${mirror_url}/\$releasever/os/\$basearch/",
+    $baseurl_updates = "${mirror_url}/\$releasever/updates/\$basearch/",
+    $baseurl_extras = "${mirror_url}/\$releasever/extras/\$basearch/",
+    $baseurl_centosplus = "${mirror_url}/\$releasever/centosplus/\$basearch/",
+    $mirrorlist_base = undef
+    $mirrorlist_updates = undef
+    $mirrorlist_extras = undef
+    $mirrorlist_centosplus = undef
+  } else {
+    $baseurl_base = undef
+    $baseurl_updates = undef
+    $baseurl_extras = undef
+    $baseurl_centosplus = undef
+    $mirrorlist_base = 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra'
+    $mirrorlist_updates = 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra'
+    $mirrorlist_extras = 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra'
+    $mirrorlist_centosplus = 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra'
   }
 
   yum::managed_yumrepo { 'base':
     descr          => 'CentOS-$releasever - Base',
     baseurl        => $baseurl_base,
-    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra',
+    mirrorlist     => $mirrorlist_base,
     failovermethod => 'priority',
     enabled        => 1,
     gpgcheck       => 1,
@@ -61,7 +58,7 @@ class yum::repo::centos7 (
   yum::managed_yumrepo { 'updates':
     descr          => 'CentOS-$releasever - Updates',
     baseurl        => $baseurl_updates,
-    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates&infra=$infra',
+    mirrorlist     => $mirrorlist_updates,
     failovermethod => 'priority',
     enabled        => 1,
     gpgcheck       => 1,
@@ -72,7 +69,7 @@ class yum::repo::centos7 (
   yum::managed_yumrepo { 'extras':
     descr          => 'CentOS-$releasever - Extras',
     baseurl        => $baseurl_extras,
-    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra',
+    mirrorlist     => $mirrorlist_extras,
     failovermethod => 'priority',
     enabled        => 1,
     gpgcheck       => 1,
@@ -83,7 +80,7 @@ class yum::repo::centos7 (
   yum::managed_yumrepo { 'centosplus':
     descr          => 'CentOS-$releasever - Centosplus',
     baseurl        => $baseurl_centosplus,
-    mirrorlist     => 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra',
+    mirrorlist     => $mirrorlist_centosplus,
     failovermethod => 'priority',
     enabled        => 1,
     gpgcheck       => 1,
