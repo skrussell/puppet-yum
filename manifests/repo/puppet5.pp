@@ -3,9 +3,9 @@
 # This class installs the puppet5 repo
 #
 class yum::repo::puppet5 (
-  $baseurl    = '',
-  $collection = '1',
-  $priority   = 99,
+  $host_server = 'yum.puppetlabs.com',
+  $baseurl     = '',
+  $priority    = 99,
 ) {
   $osver = $::operatingsystem ? {
     'XenServer' => [ '5' ],
@@ -17,7 +17,7 @@ class yum::repo::puppet5 (
   }
 
   $real_baseurl = $baseurl ? {
-    ''      => "http://yum.puppetlabs.com/puppet5/el/${release}/\$basearch",
+	''      => "http://${host_server}/puppet5/el/${release}/\$basearch",
     default => $baseurl,
   }
 
