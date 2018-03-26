@@ -22,7 +22,7 @@ class yum::repo::centos7 (
     validate_re(
       $mirror_url,
       '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\/[\w\.~-]*)*$',
-      '$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash.'
+      "\$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash. Recieved '${mirror_url}'"
     )
     $baseurl_base = "${mirror_url}/\$releasever/os/\$basearch/"
     $baseurl_updates = "${mirror_url}/\$releasever/updates/\$basearch/"
