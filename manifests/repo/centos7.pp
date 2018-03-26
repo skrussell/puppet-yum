@@ -19,11 +19,6 @@ class yum::repo::centos7 (
 
   if $mirror_url {
 	include yum::disable_fastest
-    validate_re(
-      $mirror_url,
-      '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\/[\w\.~-]*)*$',
-      '$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash.'
-    )
     $baseurl_base = "${mirror_url}/\$releasever/os/\$basearch/"
     $baseurl_updates = "${mirror_url}/\$releasever/updates/\$basearch/"
     $baseurl_extras = "${mirror_url}/\$releasever/extras/\$basearch/"
