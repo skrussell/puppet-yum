@@ -28,7 +28,7 @@ class yum::repo::epel (
     validate_re(
       $mirror_url,
       '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\:[0-9]{1,5})?(?:\/[\w\.~-]*)*$',
-      '$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash.'
+      "\$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash. Recieved '${mirror_url}'"
     )
     $baseurl_epel = "${mirror_url}/${osver[0]}/\$basearch/"
     $baseurl_epel_debuginfo = "${mirror_url}/${osver[0]}/\$basearch/debug"
