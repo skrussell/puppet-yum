@@ -12,7 +12,7 @@ define yum::versionlock (
 		$use_package_name = $name
 	}
 
-	$locked_check = "yum -C versionlock list | grep -q ${use_package_name}"A
+	$locked_check = "yum -C versionlock list | grep -q ${use_package_name}"
 
 	if ($ensure == 'present') {
 		exec { "add-yum-lock-${name}":
