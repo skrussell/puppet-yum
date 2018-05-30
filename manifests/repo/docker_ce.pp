@@ -27,7 +27,7 @@ class yum::repo::docker_ce (
   }
 
   yum::managed_yumrepo { 'docker-ce':
-	desc          => 'Docker CE Stable - $basearch',
+	descr         => 'Docker CE Stable - $basearch',
     baseurl       => "${baseurl_ensured}/\$basearch/stable",
     enabled       => 1,
     gpgcheck      => 1,
@@ -36,7 +36,7 @@ class yum::repo::docker_ce (
   }
 
 #  yum::managed_yumrepo { 'docker-ce-stable-debuginfo':
-#	desc          => 'Docker CE Stable - Debuginfo $basearch',
+#	descr         => 'Docker CE Stable - Debuginfo $basearch',
 #    baseurl       => "${baseurl_ensured}/\$basearch/stable",
 #    enabled       => 0,
 #    gpgcheck      => 1,
@@ -45,7 +45,7 @@ class yum::repo::docker_ce (
 #  }
 #
 #  yum::managed_yumrepo { 'docker-ce-stable-source':
-#	desc          => "Docker CE Stable - Sources",
+#	descr         => "Docker CE Stable - Sources",
 #    baseurl       => "${baseurl_ensured}/\$basearch/stable",
 #    enabled       => 0,
 #    gpgcheck      => 1,
