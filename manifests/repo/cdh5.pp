@@ -6,8 +6,8 @@
 # @param baseurl_extras An overriding URL to use (must be a full Yum repository URL for the gplextra5 packages)
 class yum::repo::cdh5 (
 	Pattern[/\A5(\.\d\d?){0,2}\z/] $version = 5,
-	Optional[Stdlib::Httpurl] $baseurl = undef,
-	Optional[Stdlib::Httpurl] $baseurl_extras = undef
+	Optional[Stdlib::HTTPurl] $baseurl = undef,
+	Optional[Stdlib::HTTPurl] $baseurl_extras = undef
 ) {
 	unless (($baseurl and $baseurl) or $facts['os']['hardware'] == 'x86_64') {
 		fail('Only x86_84 packages are hosted in the cloudera repository')

@@ -6,7 +6,7 @@
 # @param baseurl_extras An overriding URL to use (must be a full Yum repository URL for the gplextra6 packages)
 class yum::repo::cdh6 (
 	Pattern[/\A6(\.\d\d?){0,2}\z/] $version = '6.0.0',
-	Optional[Stdlib::Httpurl] $baseurl = undef
+	Optional[Stdlib::HTTPurl] $baseurl = undef
 ) {
 	unless (($baseurl and $baseurl) or $facts['os']['hardware'] == 'x86_64') {
 		fail('Only x86_84 packages are hosted in the cloudera repository')
