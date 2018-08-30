@@ -15,33 +15,33 @@ class yum::repo::cdh5 (
 	if ($baseurl) {
 		$use_baseurl = $baseurl
 	} else {
-		$use_baseurl = "http://archive.cloudera.com/cdh5/redhat/${facts['os']['release']['major']}/x86_64/cdh/${version}/"
+		$use_baseurl = "https://archive.cloudera.com/cdh5/redhat/${facts['os']['release']['major']}/x86_64/cdh/${version}/"
 	}
 	if ($baseurl_extras) {
 		$use_baseurl_extras = $baseurl_extras
 	} else {
-		$use_baseurl_extras = "http://archive.cloudera.com/gplextras5/redhat/${facts['os']['release']['major']}/x86_64/gplextras/${version}/"
+		$use_baseurl_extras = "https://archive.cloudera.com/gplextras5/redhat/${facts['os']['release']['major']}/x86_64/gplextras/${version}/"
 	}
 
-  yum::managed_yumrepo { 'cloudera-cdh5':
-    descr          => "Cloudera's Distribution for Hadoop, Version 5",
-    baseurl        => $use_baseurl,
-    enabled        => 1,
-    gpgcheck       => 1,
-    gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-cloudera',
-    gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-cloudera',
-    priority       => 20,
-    failovermethod => 'priority',
-  }
+	yum::managed_yumrepo { 'cloudera-cdh5':
+		descr          => "Cloudera's Distribution for Hadoop, Version 5",
+		baseurl        => $use_baseurl,
+		enabled        => 1,
+		gpgcheck       => 1,
+		gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-cloudera',
+		gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-cloudera',
+		priority       => 20,
+		failovermethod => 'priority',
+	}
 
-  yum::managed_yumrepo { 'cloudera-gplextras5':
-    descr          => "Cloudera's GPLExtras, Version 5",
-    baseurl        => $use_baseurl_extras,
-    enabled        => 1,
-    gpgcheck       => 1,
-    gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-cloudera',
-    gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-cloudera',
-    priority       => 20,
-    failovermethod => 'priority',
-  }
+	yum::managed_yumrepo { 'cloudera-gplextras5':
+		descr          => "Cloudera's GPLExtras, Version 5",
+		baseurl        => $use_baseurl_extras,
+		enabled        => 1,
+		gpgcheck       => 1,
+		gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-cloudera',
+		gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-cloudera',
+		priority       => 20,
+		failovermethod => 'priority',
+	}
 }
