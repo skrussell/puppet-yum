@@ -26,9 +26,11 @@ class yum::repo::puppet5 (
     baseurl        => $real_baseurl,
     enabled        => 1,
     gpgcheck       => 1,
-    gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5',
+    gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5-release',
     gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-puppet5',
     priority       => $priority,
   }
-
+  -> file { '/etc/pki/rpm-gpg/RPM-GPG-KEY-puppet5':
+    ensure => 'absent'
+  }
 }
