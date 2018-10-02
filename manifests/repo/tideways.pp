@@ -16,7 +16,7 @@ class yum::repo::tideways {
 	}
 
 	exec { "yum_clean_${repo_name}_cache":
-		command     => "yum clean all --enablerepo=${repo_name} --disablerepo='*'",
+		command     => "yum clean all --disablerepo='*' --enablerepo='${repo_name}'",
 		refreshonly => true
 	}
 }
