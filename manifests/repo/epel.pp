@@ -49,12 +49,12 @@ class yum::repo::epel (
     $baseurl_epel_testing = undef
     $baseurl_epel_testing_debuginfo = undef
     $baseurl_epel_testing_source = undef
-	$metalink_epel = "https://mirrors.fedoraproject.org/metalink?repo=epel-${osver[0]}&arch=\$basearch"
-	$metalink_epel_debuginfo = "https://mirrors.fedoraproject.org/metalink?repo=epel-debug-${osver[0]}&arch=\$basearch"
-	$metalink_epel_source = "https://mirrors.fedoraproject.org/metalink?repo=epel-source-${osver[0]}&arch=\$basearch"
-	$metalink_epel_testing = "https://mirrors.fedoraproject.org/metalink?repo=testing-epel${osver[0]}&arch=\$basearch"
-	$metalink_epel_testing_debuginfo = "https://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel${osver[0]}&arch=\$basearch"
-	$metalink_epel_testing_source = "https://mirrors.fedoraproject.org/metalink?repo=testing-source-epel${osver[0]}&arch=\$basearch"
+	$metalink_epel = "http://mirrors.fedoraproject.org/metalink?repo=epel-${osver[0]}&arch=\$basearch"
+	$metalink_epel_debuginfo = "http://mirrors.fedoraproject.org/metalink?repo=epel-debug-${osver[0]}&arch=\$basearch"
+	$metalink_epel_source = "http://mirrors.fedoraproject.org/metalink?repo=epel-source-${osver[0]}&arch=\$basearch"
+	$metalink_epel_testing = "http://mirrors.fedoraproject.org/metalink?repo=testing-epel${osver[0]}&arch=\$basearch"
+	$metalink_epel_testing_debuginfo = "http://mirrors.fedoraproject.org/metalink?repo=testing-debug-epel${osver[0]}&arch=\$basearch"
+	$metalink_epel_testing_source = "http://mirrors.fedoraproject.org/metalink?repo=testing-source-epel${osver[0]}&arch=\$basearch"
   }
 
   yum::managed_yumrepo { 'epel':
