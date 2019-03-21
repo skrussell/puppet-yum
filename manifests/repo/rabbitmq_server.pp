@@ -6,7 +6,7 @@ class yum::repo::rabbitmq_server {
 	$gpg_key_filename = 'RPM-GPG-KEY-rabbitmq'
 	$gpg_key_file     = "/etc/pki/rpm-gpg/${gpg_key_filename}"
 	exec { 'remove_old_gpg_key':
-		command => "rm -f ${gpg_key_file})",
+		command => "rm -f ${gpg_key_file}",
 		onlyif  => "test \"$(sha1sum < ${gpg_key_file})\" = \"8f6e2a1aacca3cbc5a900fce1119ae4310f0c8c1  -\"",
 		before  => Yum::Managed_yumrepo[ 'rabbitmq_rabbitmq-server', 'rabbitmq_rabbitmq-server-source' ]
 	}
