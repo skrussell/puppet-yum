@@ -18,7 +18,7 @@ define yum::managed_yumrepo (
   Variant[Enum['absent'],String[1]] $exclude = 'absent',
   Enum['yes','no'] $autokeyimport = 'no',
   Variant[Enum['absent'],String[1]] $includepkgs = 'absent',
-  Variant[Enum['absent','never'],Pattern[/^[0-9]+[dhm]?$/]] $metadata_expire = 'absent',
+  Variant[Enum['absent','never'],Pattern[/^[0-9]+[dhm]$/],Integer[0]] $metadata_expire = 'absent',
   Variant[Enum['absent'],String[1]] $include = 'absent',
   Variant[Enum['absent'],Yum::Boolean] $repo_gpgcheck = 'absent',
   Variant[Enum['absent'],Pattern[$re::path]] $sslcacert = 'absent',
