@@ -2,8 +2,11 @@
 #
 # This class installs the DELL OpenManage repo
 #
-class yum::repo::dell_omsa {
+class yum::repo::dell_omsa (
+	Enum['present','absent'] $ensure = 'present'
+) {
   yum::managed_yumrepo { 'dell-omsa-indep':
+		ensure         => $ensure,
     descr          => 'Dell OMSA repository - Hardware independent',
     enabled        => 1,
     gpgcheck       => 1,
@@ -13,6 +16,7 @@ class yum::repo::dell_omsa {
   }
 
   yum::managed_yumrepo { 'dell-omsa-specific':
+		ensure         => $ensure,
     descr          => 'Dell OMSA repository - Hardware specific',
     enabled        => 1,
     gpgcheck       => 1,
