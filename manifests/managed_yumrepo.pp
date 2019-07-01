@@ -45,7 +45,10 @@ define yum::managed_yumrepo (
 		default   => $ensure
 	}
 
-	$repo_target_file = "/etc/yum.repos.d/${file_name}.repo"
+	# Turns out the yumrepo target support is not yet implemented! Need to use independant files
+	# until it is implemented (bug open since 2014, so fat chance of that anytime soon...)
+	#$repo_target_file = "/etc/yum.repos.d/${file_name}.repo"
+	$repo_target_file = "/etc/yum.repos.d/${name}.repo"
 
   if ! defined(File[$repo_target_file]) {
     file { $repo_target_file:
