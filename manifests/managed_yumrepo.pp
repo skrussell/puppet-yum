@@ -108,12 +108,14 @@ define yum::managed_yumrepo (
     }
 
     if $ensure == 'present' and $autokeyimport == 'yes' and $gpgkey != 'absent' {
-      exec { "rpmkey_add_${use_gpgkey}":
-        command     => "rpm --import ${use_gpgkey}",
-        before      => Yumrepo[ $name ],
-        refreshonly => true,
-        path        => '/sbin:/bin:/usr/sbin:/usr/bin',
-      }
-    }
+			if ! defined(Exec["rpmkey_add_${use_gpgkey}"]) {
+				exec { "rpmkey_add_${use_gpgkey}":
+					command     => "rpm --import ${use_gpgkey}",
+					before      => Yumrepo[ $name ],
+					refreshonly => true,
+					path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+				}
+			}
+		}
   }
 }
