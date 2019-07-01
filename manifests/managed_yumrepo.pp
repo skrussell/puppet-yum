@@ -24,7 +24,7 @@ define yum::managed_yumrepo (
   Variant[Enum['absent'],Pattern[$re::path]] $sslcacert = 'absent',
   Variant[Enum['absent'],Pattern[$re::path]] $sslclientcert = 'absent',
   Variant[Enum['absent'],Pattern[$re::path]] $sslclientkey = 'absent',
-  Yum::Boolean $sslverify = 'absent'
+  Variant[Enum['absent'],Yum::Boolean] $sslverify = 'absent'
 ) {
 
   # ensure that everything is setup
