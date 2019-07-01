@@ -1,7 +1,7 @@
 # = Define yum::managed_yumrepo
 #
 define yum::managed_yumrepo (
-	Enum['present','absnet'] $ensure = 'present',
+	Enum['present','absent'] $ensure = 'present',
   Variant[Enum['absent'],String[1]] $descr = 'absent',
   Variant[Enum['absent'],Yum::Url] $baseurl = 'absent',
   Variant[Enum['absent'],Yum::Url] $mirrorlist = 'absent',
