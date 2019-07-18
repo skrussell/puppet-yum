@@ -23,7 +23,7 @@ class yum::repo::nginx (
     baseurl  => $baseurl,
     enabled  => 1,
     gpgcheck => 1,
-		gpgkey   => 'https://nginx.org/keys/nginx_signing.key'
+		gpgkey   => 'https://nginx.org/keys/nginx_signing.key',
     priority => 1,
   }
 }
