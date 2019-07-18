@@ -19,7 +19,7 @@ class yum::repo::nginx (
 	}
 
   yum::managed_yumrepo { 'nginx':
-    descr    => "nginx ${stream} repo"
+    descr    => "nginx ${stream} repo",
     baseurl  => $baseurl,
     enabled  => 1,
     gpgcheck => 1,
