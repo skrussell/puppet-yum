@@ -1,13 +1,13 @@
-# = Class: yum::repo::puppet5
+# = Class: yum::repo::puppet6
 #
-# This class installs the puppet5 repo
+# This class installs the puppet6 repo
 #
-class yum::repo::puppet5 (
+class yum::repo::puppet6 (
   $host_server = 'yum.puppetlabs.com',
   $baseurl     = '',
   $priority    = 99,
 ) {
-	$version = 5
+	$version = 6
   $osver = $::operatingsystem ? {
     'XenServer' => [ '5' ],
     default     => split($::operatingsystemrelease, '[.]')
