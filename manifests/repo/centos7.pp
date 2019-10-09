@@ -17,6 +17,8 @@ class yum::repo::centos7 (
   $mirror_url = undef,
 ) {
 
+	notify { "DEBUG ::: caller_module_name='${caller_module_name}'": }
+
   if $mirror_url {
 	include yum::disable_fastest
     validate_re(
