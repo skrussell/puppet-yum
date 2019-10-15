@@ -85,6 +85,15 @@ define yum::managed_yumrepo (
 		default => $gpgkey
 	}
 
+	if ($yum::priorities_plugin) {
+		$use_priority = $priority
+		if ($failovermethod == 'priority') {
+			fail('Can not set failovermethod == "priority" /and/ disable the yum priorities plugin')
+		}
+	} else {
+		$use_priority = undef
+	}
+
 	if (! defined(Yumrepo[$name])) {
 		yumrepo { $name:
 			ensure          => $ensure,
@@ -96,7 +105,7 @@ define yum::managed_yumrepo (
 			gpgcheck        => $gpgcheck,
 			gpgkey          => $use_gpgkey,
 			failovermethod  => $failovermethod,
-			priority        => $priority,
+			priority        => $use_priority,
 			protect         => $protect,
 			exclude         => $exclude,
 			includepkgs     => $includepkgs,
