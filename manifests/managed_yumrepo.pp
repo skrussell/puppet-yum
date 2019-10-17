@@ -90,7 +90,7 @@ define yum::managed_yumrepo (
 		$use_failover = $failovermethod
 	} else {
 		if ($failovermethod == 'priority') {
-			warn("It' useless setting the 'failovermethod' to 'priority' when the yum priorities plugin is disable. Setting to 'absent' for repo: ${name}")
+			warning("It' useless setting the 'failovermethod' to 'priority' when the yum priorities plugin is disable. Setting to 'absent' for repo: ${name}")
 			$use_failover = 'absent'
 		} else {
 			$use_failover = $failovermethod
