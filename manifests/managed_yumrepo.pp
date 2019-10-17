@@ -87,10 +87,14 @@ define yum::managed_yumrepo (
 
 	if ($yum::priorities_plugin) {
 		$use_priority = $priority
-		if ($failovermethod == 'priority') {
-			fail('Can not set failovermethod == "priority" /and/ disable the yum priorities plugin')
-		}
+		$use_failover = $failovermethod
 	} else {
+		if ($failovermethod == 'priority') {
+			warn("It' useless setting the 'failovermethod' to 'priority' when the yum priorities plugin is disable. Setting to 'absent' for repo: ${name}")
+			$use_failover = 'absent'
+		} else {
+			$use_failover = $failovermethod
+		}
 		$use_priority = undef
 	}
 
@@ -104,7 +108,7 @@ define yum::managed_yumrepo (
 			enabled         => $enabled,
 			gpgcheck        => $gpgcheck,
 			gpgkey          => $use_gpgkey,
-			failovermethod  => $failovermethod,
+			failovermethod  => $use_failover,
 			priority        => $use_priority,
 			protect         => $protect,
 			exclude         => $exclude,
