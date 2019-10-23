@@ -39,7 +39,7 @@ define yum::repo::remi_php_repo (
 	if ($osname == 'Fedora') {
 		if (versioncmp($facts['os']['release']['major'], '28') >= 0) {
 			$use_gpg_url = $el8_key
-		} elsif (versioncmp($facts['os']['release']['major'], '26') == 0 or versioncmp($facts['os']['release']['major'], '27') == 0)
+		} elsif (versioncmp($facts['os']['release']['major'], '26') == 0 or versioncmp($facts['os']['release']['major'], '27') == 0) {
 			$use_gpg_url = 'http://rpms.remirepo.net/RPM-GPG-KEY-remi2017'
 		} else {
 			$use_gpg_url = $el7_key
