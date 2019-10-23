@@ -1,7 +1,7 @@
 #
 # Defined type for easily managing a remi repository for a specific PHP version
 #
-define yum::repos::remi_php_repo (
+define yum::repo::remi_php_repo (
 	Pattern[/\A[57]\.\d\z/] $version = $name,
 	Optional[String] $mirror_url = undef
 ) {
