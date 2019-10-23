@@ -23,15 +23,15 @@ define yum::repo::remi_php_repo (
 	$version_short = regsubst($version, '\.', '')
 
 	if ($mirror_url) {
-		$use_mirrorlist = 'absent'
 		$use_baseurl    = $mirror_url
+		$use_mirrorlist = 'absent'
 	} else {
 		$mirror_list_base_url = "http://rpms.remirepo.net/${os}/${releasever}/php${version_short}"
-		$use_mirrorlist = $facts['os']['release']['major'] ? {
-			8       => "${mirror_list_base_url}/\$basearch/mirror",
+		$use_baseurl          = 'absent'
+		$use_mirrorlist       = $facts['os']['release']['major'] ? {
+			'8'     => "${mirror_list_base_url}/\$basearch/mirror",
 			default => "${mirror_list_base_url}/mirror"
 		}
-		$use_baseurl    = 'absent'
 	}
 
 	yum::managed_yumrepo { "remi-php${version_short}":
