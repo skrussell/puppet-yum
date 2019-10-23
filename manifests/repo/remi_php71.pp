@@ -5,7 +5,7 @@
 class yum::repo::remi_php71 (
 	Optional[String] $mirror_url = undef
 ) {
-	yum::repos::remi_php_repo { '7.1':
+	yum::repo::remi_php_repo { '7.1':
 		mirror_url => $mirror_url
 	}
 }
