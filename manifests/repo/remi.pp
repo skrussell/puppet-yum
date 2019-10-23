@@ -32,13 +32,30 @@ class yum::repo::remi (
 		}
 	}
 
+	$el8_key = 'http://rpms.remirepo.net/RPM-GPG-KEY-remi2018'
+	$el7_key = 'http://rpms.remirepo.net/RPM-GPG-KEY-remi'
+	if ($osname == 'Fedora') {
+		if (versioncmp($facts['os']['release']['major'], '28') >= 0) {
+			$use_gpg_url = $el8_key
+		} elsif (versioncmp($facts['os']['release']['major'], '26') == 0 or versioncmp($facts['os']['release']['major'], '27') == 0)
+			$use_gpg_url = 'http://rpms.remirepo.net/RPM-GPG-KEY-remi2017'
+		} else {
+			$use_gpg_url = $el7_key
+		}
+	} else {
+		$use_gpg_url = $facts['os']['release']['major'] ? {
+			'8'     => $el8_key,
+			default => $el7_key
+		}
+	}
+
 	yum::managed_yumrepo { 'remi':
 		descr      => "Remi's RPM repository for ${osname} \$releasever - \$basearch",
 		baseurl    => $use_baseurl,
 		mirrorlist => $use_mirrorlist,
 		enabled    => 1,
 		gpgcheck   => 1,
-		gpgkey     => 'http://rpms.remirepo.net/RPM-GPG-KEY-remi',
+		gpgkey     => $use_gpg_url,
 		priority   => 1,
 	}
 }
