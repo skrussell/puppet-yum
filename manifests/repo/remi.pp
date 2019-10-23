@@ -5,20 +5,20 @@
 class yum::repo::remi (
 	Optional[String] $mirror_url = undef
 ) {
-  $releasever = $::operatingsystem ? {
-    /(?i:Amazon)/ => '6',
-    default       => '$releasever',  # Yum var
-  }
+	$releasever = $::operatingsystem ? {
+		/(?i:Amazon)/ => '6',
+		default       => '$releasever',  # Yum var
+	}
 
-  $os = $::operatingsystem ? {
-    /(?i:Fedora)/ => 'fedora',
-    default       => 'enterprise',
-  }
+	$os = $::operatingsystem ? {
+		/(?i:Fedora)/ => 'fedora',
+		default       => 'enterprise',
+	}
 
-  $osname = $::operatingsystem ? {
-    /(?i:Fedora)/ => 'Fedora',
-    default       => 'Enterprise Linux',
-  }
+	$osname = $::operatingsystem ? {
+		/(?i:Fedora)/ => 'Fedora',
+		default       => 'Enterprise Linux',
+	}
 
 	if ($mirror_url) {
 		$use_baseurl    = $mirror_url
@@ -32,13 +32,13 @@ class yum::repo::remi (
 		}
 	}
 
-  yum::managed_yumrepo { 'remi':
-    descr      => "Remi's RPM repository for ${osname} \$releasever - \$basearch",
+	yum::managed_yumrepo { 'remi':
+		descr      => "Remi's RPM repository for ${osname} \$releasever - \$basearch",
 		baseurl    => $use_baseurl,
-    mirrorlist => $use_mirrorlist,
-    enabled    => 1,
-    gpgcheck   => 1,
-    gpgkey     => 'http://rpms.remirepo.net/RPM-GPG-KEY-remi',
-    priority   => 1,
-  }
+		mirrorlist => $use_mirrorlist,
+		enabled    => 1,
+		gpgcheck   => 1,
+		gpgkey     => 'http://rpms.remirepo.net/RPM-GPG-KEY-remi',
+		priority   => 1,
+	}
 }
