@@ -2,7 +2,9 @@
 #
 # This class installs the remi repo
 #
-class yum::repo::remi {
+class yum::repo::remi (
+	Optional[String] $mirror_url = undef
+) {
   $releasever = $::operatingsystem ? {
     /(?i:Amazon)/ => '6',
     default       => '$releasever',  # Yum var
@@ -18,9 +20,22 @@ class yum::repo::remi {
     default       => 'Enterprise Linux',
   }
 
+	if ($mirror_url) {
+		$use_baseurl    = $mirror_url
+		$use_mirrorlist = 'absent'
+	} else {
+		$mirror_list_base_url = "http://rpms.remirepo.net/${os}/${releasever}/remi"
+		$use_baseurl          = 'absent'
+		$use_mirrorlist       = $facts['os']['release']['major'] ? {
+			'8'     => "${mirror_list_base_url}/\$basearch/mirror",
+			default => "${mirror_list_base_url}/mirror"
+		}
+	}
+
   yum::managed_yumrepo { 'remi':
     descr      => "Remi's RPM repository for ${osname} \$releasever - \$basearch",
-    mirrorlist => "http://rpms.remirepo.net/${os}/${releasever}/remi/mirror",
+		baseurl    => $use_baseurl,
+    mirrorlist => $use_mirrorlist,
     enabled    => 1,
     gpgcheck   => 1,
     gpgkey     => 'http://rpms.remirepo.net/RPM-GPG-KEY-remi',
