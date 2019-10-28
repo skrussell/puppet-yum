@@ -28,7 +28,7 @@ class yum::repo::percona (
 
 	yum::managed_yumrepo { 'percona':
 		descr          => 'Percona RPM Repository (http://www.percona.com/percona-lab.html)',
-		baseurl        => "${use_base_url}/\$releasever/os/\$basearch/",
+		baseurl        => $use_url,
 		enabled        => 1,
 		gpgcheck       => 1,
 		failovermethod => 'priority',
