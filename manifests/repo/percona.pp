@@ -11,7 +11,7 @@ class yum::repo::percona (
 		$use_gpgkey = 'file:///etc/pki/rpm-gpg/PERCONA-PACKAGING-KEY'
 	} else {
 		$base_url = 'http://repo.percona.com/yum/release'
-		if ($facts['os']['name'] == 'CentOS' and versioncmp($facts['os']['release']['major'], '7' <=)) {
+		if ($facts['os']['name'] == 'CentOS' and versioncmp($facts['os']['release']['major'], '7') <= 0) {
 			$use_base_url = "${base_url}/${downcase($facts['os']['name'])}"
 		} else {
 			$use_base_url = $base_url
