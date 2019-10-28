@@ -3,7 +3,7 @@
 # This class installs the Percona RPM Repository
 #
 class yum::repo::percona (
-	String $mirror_url
+	Optional[String] $mirror_url = undef
 ) {
 	if ($mirror_url) {
 		$use_url = $mirror_url
