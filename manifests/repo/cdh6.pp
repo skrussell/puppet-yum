@@ -28,8 +28,8 @@ class yum::repo::cdh6 (
 		baseurl        => $use_baseurl,
 		enabled        => 1,
 		gpgcheck       => 1,
-		gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-cloudera',
-		gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-cloudera',
+		gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-cloudera6',
+		gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-cloudera6',
 		priority       => 20,
 		failovermethod => 'priority',
 	}
@@ -39,8 +39,8 @@ class yum::repo::cdh6 (
 		baseurl        => $use_baseurl_extras,
 		enabled        => 1,
 		gpgcheck       => 1,
-		gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-cloudera',
-		gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-cloudera',
+		gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-cloudera6',
+		gpgkey_source  => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-cloudera6',
 		priority       => 20,
 		failovermethod => 'priority',
 	}
