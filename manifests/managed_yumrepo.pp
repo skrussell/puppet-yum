@@ -10,7 +10,7 @@ define yum::managed_yumrepo (
 	String $file_name = $name,
 	Yum::Boolean $gpgcheck = 0,
 	Variant[Enum['absent'],Yum::Url,Array[Yum::Url]] $gpgkey = 'absent',
-	Optional[Stdlib::Filesource] $gpgkey_source = undef,
+	Optional[Variant[Stdlib::Filesource,Array[Stdlib::Filesource]]] $gpgkey_source = undef,
 	Optional[String[1]] $gpgkey_name = undef,
 	Enum['absent','roundrobin','priority'] $failovermethod = 'absent',
 	Integer $priority = 99,
@@ -60,21 +60,42 @@ define yum::managed_yumrepo (
 			group   => 0,
 		}
 
-		$gpgkey_real_name = $gpgkey_name ? {
-			undef   => url_parse($gpgkey_source,'filename'),
-			default => $gpgkey_name,
-		}
-
 		if ($gpgkey_source) {
-			if ! defined(File["/etc/pki/rpm-gpg/${gpgkey_real_name}"]) {
-				file { "/etc/pki/rpm-gpg/${gpgkey_real_name}":
-					ensure  => $file_ensure,
-					replace => false,
-					before  => Yumrepo[ $name ],
-					source  => $gpgkey_source,
-					mode    => '0644',
-					owner   => 'root',
-					group   => 0,
+			if ($gpgkey_source =~ Array) {
+				$gpgkey_source.each |Stdlib::Filesource $g_k_s| {
+					if ($gpgkey_name) {
+						fail("Error managing yum repo '${name}' - can not specify a gpgkey_name parameter when more than one GPG file is managed")
+					}
+					$gpgkey_real_name = url_parse($g_k_s,'filename'),
+
+					if ! defined(File["/etc/pki/rpm-gpg/${gpgkey_real_name}"]) {
+						file { "/etc/pki/rpm-gpg/${gpgkey_real_name}":
+							ensure  => $file_ensure,
+							replace => false,
+							before  => Yumrepo[ $name ],
+							source  => $g_k_s,
+							mode    => '0644',
+							owner   => 'root',
+							group   => 0,
+						}
+					}
+				}
+			} else {
+				$gpgkey_real_name = $gpgkey_name ? {
+					undef   => url_parse($gpgkey_source,'filename'),
+					default => $gpgkey_name,
+				}
+
+				if ! defined(File["/etc/pki/rpm-gpg/${gpgkey_real_name}"]) {
+					file { "/etc/pki/rpm-gpg/${gpgkey_real_name}":
+						ensure  => $file_ensure,
+						replace => false,
+						before  => Yumrepo[ $name ],
+						source  => $gpgkey_source,
+						mode    => '0644',
+						owner   => 'root',
+						group   => 0,
+					}
 				}
 			}
 		}
