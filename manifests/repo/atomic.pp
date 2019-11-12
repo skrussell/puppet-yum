@@ -3,6 +3,7 @@
 # This class installs the atomic repo
 #
 class yum::repo::atomic (
+	Enum['present','absent'] $ensure = 'present',
 	Optional[Stdlib::Httpurl] $mirror_url = undef
 ) {
 	$os = downcase($facts['os']['name'])
@@ -16,6 +17,7 @@ class yum::repo::atomic (
 	}
 
 	yum::managed_yumrepo { 'atomic':
+		ensure        => $ensure,
 		descr         => 'CentOS / Red Hat Enterprise Linux $releasever - atomic',
 		baseurl       => $use_baseurl,
 		mirrorlist    => $use_mirrorlist,
