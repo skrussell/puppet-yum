@@ -66,7 +66,7 @@ define yum::managed_yumrepo (
 					if ($gpgkey_name) {
 						fail("Error managing yum repo '${name}' - can not specify a gpgkey_name parameter when more than one GPG file is managed")
 					}
-					$gpgkey_real_name = url_parse($g_k_s,'filename'),
+					$gpgkey_real_name = url_parse($g_k_s,'filename')
 
 					if ! defined(File["/etc/pki/rpm-gpg/${gpgkey_real_name}"]) {
 						file { "/etc/pki/rpm-gpg/${gpgkey_real_name}":
