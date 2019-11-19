@@ -5,7 +5,7 @@
 class yum::repo::erlang (
 	Enum['present','absent'] $ensure = 'present',
 	Optional[Stdlib::Httpurl] $mirror_url = undef,
-	Optional[String] $exclude
+	Optional[String] $exclude = undef
 ) {
 	if ($mirror_url) {
 		$use_baseurl = $mirror_url
