@@ -5,10 +5,11 @@
 class yum::repo::percona (
 	Optional[String] $mirror_url = undef
 ) {
+	$key_names = [ 'PERCONA-PACKAGING-KEY', 'RPM-GPG-KEY-percona' ]
 	if ($mirror_url) {
 		$use_url = $mirror_url
-		$use_gpgsrc = 'puppet:///modules/yum/rpm-gpg/PERCONA-PACKAGING-KEY'
-		$use_gpgkey = 'file:///etc/pki/rpm-gpg/PERCONA-PACKAGING-KEY'
+		$use_gpgsrc = prefix($key_names, 'puppet:///modules/yum/rpm-gpg/')
+		$use_gpgkey = prefix($key_names, 'file:///etc/pki/rpm-gpg/')
 	} else {
 		$base_url = 'http://repo.percona.com/yum/release'
 		if ($facts['os']['name'] == 'CentOS' and versioncmp($facts['os']['release']['major'], '7') <= 0) {
@@ -23,7 +24,7 @@ class yum::repo::percona (
 			$use_url = "${use_base_url}/\$releasever/os/\$basearch/"
 		}
 		$use_gpgsrc = undef
-		$use_gpgkey = 'https://repo.percona.com/yum/PERCONA-PACKAGING-KEY'
+		$use_gpgkey = [ 'https://repo.percona.com/yum/PERCONA-PACKAGING-KEY', 'https://www.percona.com/downloads/RPM-GPG-KEY-percona' ]
 	}
 
 	yum::managed_yumrepo { 'percona':
