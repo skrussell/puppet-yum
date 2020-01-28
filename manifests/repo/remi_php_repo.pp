@@ -48,7 +48,7 @@ define yum::repo::remi_php_repo (
 		}
 	} else {
 		include yum::repo::remi_safe
-		Class[ 'yum::repo::remi_safe' ] -> Class[ $repo_name ]
+		Class[ 'yum::repo::remi_safe' ] -> Yum::Managed_yumrepo[ $repo_name ]
 		$use_gpg_url = $facts['os']['release']['major'] ? {
 			'8'     => $el8_key,
 			default => $el7_key
