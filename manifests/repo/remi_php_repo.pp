@@ -22,6 +22,8 @@ define yum::repo::remi_php_repo (
 
 	$version_short = regsubst($version, '\.', '')
 
+	$repo_name = "remi-php${version_short}"
+
 	if ($mirror_url) {
 		$use_baseurl    = $mirror_url
 		$use_mirrorlist = 'absent'
@@ -45,13 +47,15 @@ define yum::repo::remi_php_repo (
 			$use_gpg_url = $el7_key
 		}
 	} else {
+		include yum::repo::remi_safe
+		Class[ 'yum::repo::remi_safe' ] -> Class[ $repo_name ]
 		$use_gpg_url = $facts['os']['release']['major'] ? {
 			'8'     => $el8_key,
 			default => $el7_key
 		}
 	}
 
-	yum::managed_yumrepo { "remi-php${version_short}":
+	yum::managed_yumrepo { $repo_name:
 		descr      => "Remi's PHP ${version} RPM repository for ${osname} \$releasever - \$basearch",
 		baseurl    => $use_baseurl,
 		mirrorlist => $use_mirrorlist,
