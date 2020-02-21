@@ -5,8 +5,6 @@ define yum::repo::logstash_repo (
 	Enum['5','6','7'] $version = $name,
 	Optional[Stdlib::HTTPUrl] $mirror_url = undef
 ) {
-	include yum::repo
-
 	if ($mirror_url) {
 		$baseurl = $mirror_url
 	} else {

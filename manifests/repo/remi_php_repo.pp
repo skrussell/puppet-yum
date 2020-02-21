@@ -5,8 +5,6 @@ define yum::repo::remi_php_repo (
 	Pattern[/\A[57]\.\d\z/] $version = $name,
 	Optional[Stdlib::HTTPUrl] $mirror_url = undef
 ) {
-	include yum::repo
-
 	$releasever = $::operatingsystem ? {
 		/(?i:Amazon)/ => '6',
 		default       => '$releasever',  # Yum var
