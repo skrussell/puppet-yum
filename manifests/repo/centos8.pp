@@ -15,6 +15,8 @@
 #
 class yum::repo::centos8 (
   $mirror_url = undef,
+  $mirror_url_has_contentdir = false,
+  $mirror_url_strip_contentdir = true
 ) {
 
   if $mirror_url {
@@ -24,10 +26,19 @@ class yum::repo::centos8 (
       '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\/[\w\.~-]*)*$',
       "\$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash. Recieved '${mirror_url}'"
     )
-    $baseurl_app = "${mirror_url}/\$contentdir/\$releasever/AppStream/\$basearch/os/"
-    $baseurl_base = "${mirror_url}/\$contentdir/\$releasever/BaseOS/\$basearch/os/"
-    $baseurl_extras = "${mirror_url}/\$contentdir/\$releasever/extras/\$basearch/os/"
-    $baseurl_centosplus = "${mirror_url}/\$contentdir/\$releasever/centosplus/\$basearch/os/"
+    if ($mirror_url_has_contentdir) {
+      if ($mirror_url_strip_contentdir) {
+        $use_mirror_url = regsubst($mirror_url, /centos$/, '$contentdir')
+      } else {
+        $use_mirror_url = $mirror_url
+      }
+    } else {
+      $use_mirror_url = "${mirror_url}/\$contentdir"
+    }
+    $baseurl_app = "${use_mirror_url}/\$releasever/AppStream/\$basearch/os/"
+    $baseurl_base = "${use_mirror_url}/\$releasever/BaseOS/\$basearch/os/"
+    $baseurl_extras = "${use_mirror_url}/\$releasever/extras/\$basearch/os/"
+    $baseurl_centosplus = "${use_mirror_url}/\$releasever/centosplus/\$basearch/os/"
     $mirrorlist_app = undef
     $mirrorlist_base = undef
     $mirrorlist_extras = undef
