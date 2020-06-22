@@ -44,7 +44,7 @@ class yum::repo::centos8 (
   }
 
   yum::managed_yumrepo { 'AppStream':
-    descr         => 'CentOS-$releasever - Base',
+    descr         => 'CentOS-$releasever - AppStream',
     baseurl       => $baseurl_app,
     mirrorlist    => $mirrorlist_app,
     enabled       => 1,
