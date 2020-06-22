@@ -24,34 +24,53 @@ class yum::repo::centos8 (
       '^(?:https?|ftp):\/\/[\da-zA-Z-][\da-zA-Z\.-]*\.[a-zA-Z]{2,6}\.?(?:\/[\w\.~-]*)*$',
       "\$mirror must be a Clean URL with no query-string, a fully-qualified hostname and no trailing slash. Recieved '${mirror_url}'"
     )
-    $baseurl_base = "${mirror_url}/\$releasever/BaseOS/\$basearch/"
-    $baseurl_extras = "${mirror_url}/\$releasever/extras/\$basearch/"
-    $baseurl_centosplus = "${mirror_url}/\$releasever/centosplus/\$basearch/"
+    $baseurl_app = "${mirror_url}/\$contentdir/\$releasever/AppStream/\$basearch/os/"
+    $baseurl_base = "${mirror_url}/\$contentdir/\$releasever/BaseOS/\$basearch/os/"
+    $baseurl_extras = "${mirror_url}/\$contentdir/\$releasever/extras/\$basearch/os/"
+    $baseurl_centosplus = "${mirror_url}/\$contentdir/\$releasever/centosplus/\$basearch/os/"
+    $mirrorlist_app = undef
     $mirrorlist_base = undef
     $mirrorlist_extras = undef
     $mirrorlist_centosplus = undef
   } else {
+    $baseurl_app = undef
     $baseurl_base = undef
     $baseurl_extras = undef
     $baseurl_centosplus = undef
+    $mirrorlist_app = 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=AppStream&infra=$infra'
     $mirrorlist_base = 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=BaseOS&infra=$infra'
     $mirrorlist_extras = 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras&infra=$infra'
     $mirrorlist_centosplus = 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus&infra=$infra'
   }
 
-  yum::managed_yumrepo { 'base':
+  yum::managed_yumrepo { 'AppStream':
+    descr         => 'CentOS-$releasever - Base',
+    baseurl       => $baseurl_app,
+    mirrorlist    => $mirrorlist_app,
+    enabled       => 1,
+    gpgcheck      => 1,
+    gpgkey        => 'file:///etc//pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+    gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8'
+  }
+
+  yum::managed_yumrepo { 'BaseOS':
     descr         => 'CentOS-$releasever - Base',
     baseurl       => $baseurl_base,
     mirrorlist    => $mirrorlist_base,
     enabled       => 1,
     gpgcheck      => 1,
-    gpgkey        => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-8',
-    gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8',
-    priority      => 2,
+    gpgkey        => 'file:///etc//pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+    gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8'
   }
 
-  yum::managed_yumrepo { 'updates':
-    ensure => 'absent'
+  yum::managed_yumrepo { 'centosplus':
+    descr         => 'CentOS-$releasever - Plus',
+    baseurl       => $baseurl_centosplus,
+    mirrorlist    => $mirrorlist_centosplus,
+    enabled       => 0,
+    gpgcheck      => 1,
+    gpgkey        => 'file:///etc//pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+    gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8'
   }
 
   yum::managed_yumrepo { 'extras':
@@ -60,20 +79,12 @@ class yum::repo::centos8 (
     mirrorlist    => $mirrorlist_extras,
     enabled       => 1,
     gpgcheck      => 1,
-    gpgkey        => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-8',
-    gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8',
-    priority      => 2,
+    gpgkey        => 'file:///etc//pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+    gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8'
   }
 
-  yum::managed_yumrepo { 'centosplus':
-    descr         => 'CentOS-$releasever - Centosplus',
-    baseurl       => $baseurl_centosplus,
-    mirrorlist    => $mirrorlist_centosplus,
-    enabled       => 1,
-    gpgcheck      => 1,
-    gpgkey        => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-8',
-    gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8',
-    priority      => 3,
+  yum::managed_yumrepo { 'updates':
+    ensure => 'absent'
   }
 
 }
