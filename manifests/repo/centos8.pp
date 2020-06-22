@@ -60,7 +60,7 @@ class yum::repo::centos8 (
     mirrorlist    => $mirrorlist_app,
     enabled       => 1,
     gpgcheck      => 1,
-    gpgkey        => 'file:///etc//pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+    gpgkey        => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
     gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8'
   }
 
@@ -70,7 +70,7 @@ class yum::repo::centos8 (
     mirrorlist    => $mirrorlist_base,
     enabled       => 1,
     gpgcheck      => 1,
-    gpgkey        => 'file:///etc//pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+    gpgkey        => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
     gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8'
   }
 
@@ -80,7 +80,7 @@ class yum::repo::centos8 (
     mirrorlist    => $mirrorlist_centosplus,
     enabled       => 0,
     gpgcheck      => 1,
-    gpgkey        => 'file:///etc//pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+    gpgkey        => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
     gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8'
   }
 
@@ -90,7 +90,7 @@ class yum::repo::centos8 (
     mirrorlist    => $mirrorlist_extras,
     enabled       => 1,
     gpgcheck      => 1,
-    gpgkey        => 'file:///etc//pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
+    gpgkey        => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial',
     gpgkey_source => 'puppet:///modules/yum/rpm-gpg/RPM-GPG-KEY-CentOS-8'
   }
 
