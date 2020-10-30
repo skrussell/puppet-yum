@@ -69,20 +69,23 @@ define yum::managed_yumrepo (
 						if ($gpgkey_name) {
 							$g_k_n = "${gpgkey_name}-${idx}"
 						} else {
-							$g_k_n = url_parse($g_k_s,'filename')
+							$g_k_n = url_parse($g_k_s, 'filename')
 						}
 						$res = { $g_k_s => $g_k_n }
 						$res
 					}.flatten_array_of_hashes_to_hash
 				} else {
 					$gpgkey_real_name = $gpgkey_name ? {
-						undef   => url_parse($gpgkey_source,'filename'),
+						undef   => $gpgkey ? {
+							'present' => url_parse($gpgkey_source, 'filename'),
+							default   => url_parse($gpgkey, 'filename')
+						},
 						default => $gpgkey_name,
 					}
 					$gpg_keys = { $gpgkey_source => $gpgkey_real_name }
 				}
 
-        notify { "DEBUG :${name}: gpg_keys = '${gpg_keys}'": }
+				notify { "DEBUG :${name}: gpg_keys = '${gpg_keys}'": }
 				$gpg_keys.each |Stdlib::Filesource $g_k_s, String $g_k_n| {
 					$gpg_key_file = "${yum::params::gpg_key_store}/${g_k_n}"
 					if ! defined(File[$gpg_key_file]) {
@@ -100,7 +103,7 @@ define yum::managed_yumrepo (
 				$use_gpg_key_files = $gpg_keys.map |Stdlib::Filesource $g_k_s, String $g_k_n| {
 					"file://${yum::params::gpg_key_store}/${g_k_n}"
 				}
-        notify { "DEBUG :${name}: use_gpg_key_files = '${use_gpg_key_files}'": }
+				notify { "DEBUG :${name}: use_gpg_key_files = '${use_gpg_key_files}'": }
 			} else {
 				if ($gpgkey == 'present') {
 					fail('Can not pass "gpgkey = present" without specifying gpgkey_source too')
