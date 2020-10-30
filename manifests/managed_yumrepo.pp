@@ -97,7 +97,7 @@ define yum::managed_yumrepo (
 					}
 				}
 				$use_gpg_key_files = $gpg_keys.map |Stdlib::Filesource $g_k_s, String $g_k_n| {
-					"${yum::params::gpg_key_store}/${g_k_n}"
+					"file://${yum::params::gpg_key_store}/${g_k_n}"
 				}
 			} else {
 				if ($gpgkey == 'present') {
