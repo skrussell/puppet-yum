@@ -90,13 +90,12 @@ define yum::managed_yumrepo (
 					$gpg_key_file = "${yum::params::gpg_key_store}/${g_k_n}"
 					if ! defined(File[$gpg_key_file]) {
 						file { $gpg_key_file:
-							ensure  => $file_ensure,
-							mode    => '0644',
-							owner   => 'root',
-							group   => 'root',
-							replace => false,
-							source  => $g_k_s,
-							before  => Yumrepo[ $name ]
+							ensure => $file_ensure,
+							owner  => 'root',
+							group  => 'root',
+							mode   => '0644',
+							source => $g_k_s,
+							before => Yumrepo[ $name ]
 						}
 					}
 				}
