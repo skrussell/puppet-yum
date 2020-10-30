@@ -73,7 +73,7 @@ define yum::managed_yumrepo (
 						}
 						$res = { $g_k_s => $g_k_n }
 						$res
-					}.flatten
+					}.flatten_array_of_hashes
 				} else {
 					$gpgkey_real_name = $gpgkey_name ? {
 						undef   => url_parse($gpgkey_source,'filename'),
