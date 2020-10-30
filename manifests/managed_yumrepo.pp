@@ -9,8 +9,8 @@ define yum::managed_yumrepo (
 	Yum::Boolean $enabled = 0,
 	String $file_name = $name,
 	Yum::Boolean $gpgcheck = 0,
-	Variant[Enum['absent'],Yum::Url,Array[Yum::Url]] $gpgkey = 'absent',
-	Optional[Variant[Stdlib::Filesource,Array[Stdlib::Filesource]]] $gpgkey_source = undef,
+	Variant[Enum['present','absent'],Yum::Url,Array[Yum::Url]] $gpgkey = 'absent',
+	Optional[Variant[Stdlib::Filesource,Array[Stdlib::Filesource,1],Hash[Stdlib::Filesource,String,1]]] $gpgkey_source = undef,
 	Optional[String[1]] $gpgkey_name = undef,
 	Enum['absent','roundrobin','priority'] $failovermethod = 'absent',
 	Integer $priority = 99,
@@ -60,50 +60,62 @@ define yum::managed_yumrepo (
 			group   => 0,
 		}
 
-		if ($gpgkey_source) {
-			if ($gpgkey_source =~ Array) {
-				$gpgkey_source.each |Stdlib::Filesource $g_k_s| {
-					if ($gpgkey_name) {
-						fail("Error managing yum repo '${name}' - can not specify a gpgkey_name parameter when more than one GPG file is managed")
+		if ($gpgkey != 'absent') {
+			if ($gpgkey_source) {
+				if ($gpgkey_source =~ Hash) {
+					$gpg_keys = $gpgkey_source
+				} elsif ($gpgkey_source =~ Array) {
+					$gpg_keys = $gpgkey_source.map |Integer $idx, Stdlib::Filesource $g_k_s| {
+						if ($gpgkey_name) {
+							$g_k_n = "${gpgkey_name}-${idx}"
+						} else {
+							$g_k_n = url_parse($g_k_s,'filename')
+						}
+						$res = { $g_k_s => $g_k_n }
+						$res
+					}.flatten
+				} else {
+					$gpgkey_real_name = $gpgkey_name ? {
+						undef   => url_parse($gpgkey_source,'filename'),
+						default => $gpgkey_name,
 					}
-					$gpgkey_real_name = url_parse($g_k_s,'filename')
+					$gpg_keys = { $gpgkey_source => $gpgkey_real_name }
+				}
 
-					if ! defined(File["/etc/pki/rpm-gpg/${gpgkey_real_name}"]) {
-						file { "/etc/pki/rpm-gpg/${gpgkey_real_name}":
+				$gpg_keys.each |Stdlib::Filesource $g_k_s, String $g_k_n| {
+					$gpg_key_file = "${yum::params::gpg_key_store}/${g_k_n}"
+					if ! defined(File[$gpg_key_file]) {
+						file { $gpg_key_file:
 							ensure  => $file_ensure,
-							replace => false,
-							before  => Yumrepo[ $name ],
-							source  => $g_k_s,
 							mode    => '0644',
 							owner   => 'root',
-							group   => 0,
+							group   => 'root',
+							replace => false,
+							source  => $g_k_s,
+							before  => Yumrepo[ $name ]
 						}
 					}
 				}
-			} else {
-				$gpgkey_real_name = $gpgkey_name ? {
-					undef   => url_parse($gpgkey_source,'filename'),
-					default => $gpgkey_name,
+				$use_gpg_key_files = $gpg_keys.map |Stdlib::Filesource $g_k_s, String $g_k_n| {
+					"${yum::params::gpg_key_store}/${g_k_n}"
 				}
-
-				if ! defined(File["/etc/pki/rpm-gpg/${gpgkey_real_name}"]) {
-					file { "/etc/pki/rpm-gpg/${gpgkey_real_name}":
-						ensure  => $file_ensure,
-						replace => false,
-						before  => Yumrepo[ $name ],
-						source  => $gpgkey_source,
-						mode    => '0644',
-						owner   => 'root',
-						group   => 0,
-					}
+			} else {
+				if ($gpgkey == 'present') {
+					fail('Can not pass "gpgkey = present" without specifying gpgkey_source too')
+				} else {
+					$use_gpg_key_files = $gpgkey
 				}
 			}
+		} else {
+			$use_gpg_key_files = $gpgkey
 		}
-	}
 
-	$use_gpgkey = $gpgkey ? {
-		Array   => join($gpgkey, ' '),
-		default => $gpgkey
+		$use_gpgkey = $use_gpg_key_files ? {
+			Array   => join($use_gpg_key_files, ' '),
+			default => $use_gpg_key_files
+		}
+	} else {
+		$use_gpgkey = $gpgkey
 	}
 
 	if ($yum::priorities_plugin) {

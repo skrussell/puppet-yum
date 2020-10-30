@@ -87,4 +87,5 @@ class yum::params  {
   $audit_only = false
   $priorities_plugin = true
 
+  $gpg_key_store = '/etc/pki/rpm-gpg'
 }
