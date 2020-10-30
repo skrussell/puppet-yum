@@ -13,7 +13,7 @@ class yum::repo::tideways {
 		enabled       => 1,
 		gpgcheck      => 1,
 		gpgkey        => 'present',
-		gpgkey_source => { 'https://packages.tideways.com/key.gpg' => "${gpg_key_basename}-new", 'https://s3-eu-west-1.amazonaws.com/tideways/packages/EEB5E8F4.gpg' => $gpg_key_basename },
+		gpgkey_source => { 'https://bintray.com/user/downloadSubjectPublicKey?username=tideways' => "${gpg_key_basename}-new", 'https://s3-eu-west-1.amazonaws.com/tideways/packages/EEB5E8F4.gpg' => $gpg_key_basename },
 		priority      => 1,
 		notify        => Exec[ "yum_clean_${repo_name}_cache" ]
 	}
