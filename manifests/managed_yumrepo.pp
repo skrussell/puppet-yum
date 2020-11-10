@@ -86,18 +86,30 @@ define yum::managed_yumrepo (
 				}
 
 				$gpg_keys.each |Stdlib::Filesource $g_k_s, String $g_k_n| {
-					if ($g_k_s =~ /^http/) {
-						notify { "DEBUG :${name}: ${g_k_s} -> ${g_k_n}": }
-					}
 					$gpg_key_file = "${yum::params::gpg_key_store}/${g_k_n}"
-					if ! defined(File[$gpg_key_file]) {
-						file { $gpg_key_file:
-							ensure => $file_ensure,
-							owner  => 'root',
-							group  => 'root',
-							mode   => '0644',
-							source => $g_k_s,
-							before => Yumrepo[ $name ]
+					# Due to the following bug: https://tickets.puppetlabs.com/browse/PUP-6380, for our puppet five infrastructure, we need to switch
+					# to using the 'remote_file' option, for now.
+					if ($g_k_s =~ /^http/) {
+						if ! defined(File[$gpg_key_file]) {
+							remote_file { $gpg_key_file:
+								ensure => $ensure,
+								owner  => 'root',
+								group  => 'root',
+								mode   => '0644',
+								source => $g_k_s,
+								before => Yumrepo[ $name ]
+							}
+						}
+					} else {
+						if ! defined(File[$gpg_key_file]) {
+							file { $gpg_key_file:
+								ensure => $file_ensure,
+								owner  => 'root',
+								group  => 'root',
+								mode   => '0644',
+								source => $g_k_s,
+								before => Yumrepo[ $name ]
+							}
 						}
 					}
 				}
