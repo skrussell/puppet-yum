@@ -86,6 +86,9 @@ define yum::managed_yumrepo (
 				}
 
 				$gpg_keys.each |Stdlib::Filesource $g_k_s, String $g_k_n| {
+					if ($g_k_s =~ /^http/) {
+						notify { "DEBUG :${name}: ${g_k_s} -> ${g_k_n}": }
+					}
 					$gpg_key_file = "${yum::params::gpg_key_store}/${g_k_n}"
 					if ! defined(File[$gpg_key_file]) {
 						file { $gpg_key_file:
