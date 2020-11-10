@@ -85,7 +85,6 @@ define yum::managed_yumrepo (
 					$gpg_keys = { $gpgkey_source => $gpgkey_real_name }
 				}
 
-				notify { "DEBUG :${name}: gpg_keys = '${gpg_keys}'": }
 				$gpg_keys.each |Stdlib::Filesource $g_k_s, String $g_k_n| {
 					$gpg_key_file = "${yum::params::gpg_key_store}/${g_k_n}"
 					if ! defined(File[$gpg_key_file]) {
@@ -102,7 +101,6 @@ define yum::managed_yumrepo (
 				$use_gpg_key_files = $gpg_keys.map |Stdlib::Filesource $g_k_s, String $g_k_n| {
 					"file://${yum::params::gpg_key_store}/${g_k_n}"
 				}
-				notify { "DEBUG :${name}: use_gpg_key_files = '${use_gpg_key_files}'": }
 			} else {
 				if ($gpgkey == 'present') {
 					fail('Can not pass "gpgkey = present" without specifying gpgkey_source too')
