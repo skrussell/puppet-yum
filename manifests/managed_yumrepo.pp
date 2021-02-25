@@ -127,12 +127,14 @@ define yum::managed_yumrepo (
 			$use_gpg_key_files = $gpgkey
 		}
 
-		$use_gpgkey = $use_gpg_key_files ? {
-			Array   => join($use_gpg_key_files, ' '),
-			default => $use_gpg_key_files
-		}
+		$use_gpgkey_tmp = $use_gpg_key_files
 	} else {
-		$use_gpgkey = $gpgkey
+		$use_gpgkey_tmp = $gpgkey
+	}
+
+	$use_gpgkey = $use_gpgkey_tmp ? {
+		Array   => join($use_gpgkey_tmp, ' '),
+		default => $use_gpgkey_tmp
 	}
 
 	if ($yum::priorities_plugin) {
@@ -178,13 +180,21 @@ define yum::managed_yumrepo (
 			target          => $repo_target_file
 		}
 
-		if ($ensure == 'present' and $autokeyimport == 'yes' and $gpgkey != 'absent') {
-			if (! defined(Exec["rpmkey_add_${use_gpgkey}"])) {
-				exec { "rpmkey_add_${use_gpgkey}":
-					command     => "rpm --import ${use_gpgkey}",
-					before      => Yumrepo[ $name ],
-					refreshonly => true,
-					path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+		if ($ensure == 'present' and $autokeyimport == 'yes' and $use_gpgkey != 'absent') {
+			if ($use_gpgkey_tmp =~ Array) {
+				$rpm_add_keys = $use_gpgkey_tmp
+			} else {
+				$rpm_add_keys = [ $use_gpgkey_tmp ]
+			}
+			$rpm_add_keys.each |String $g_key| {
+				if (! defined(Exec["rpmkey_add_${g_ey}"])) {
+					exec { "rpmkey_add_${g_key}":
+						path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+						command     => "rpm --import ${g_key}",
+						refreshonly => true,
+						subscribe   => File[ $g_key ],
+						before      => Yumrepo[ $name ]
+					}
 				}
 			}
 		}
