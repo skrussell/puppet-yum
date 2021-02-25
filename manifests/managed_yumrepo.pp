@@ -186,13 +186,23 @@ define yum::managed_yumrepo (
 			} else {
 				$rpm_add_keys = [ $use_gpgkey_tmp ]
 			}
-			$rpm_add_keys.each |String $g_key| {
-				if (! defined(Exec["rpmkey_add_${g_key}"])) {
+			$rpm_add_keys.each |Yum::Url $g_key| {
+				if ($g_key =~ Yum::Url::File) {
+					$g_key_file = $g_key.regsubst(/^file:\/\//, '')
+					if (defined(File[ $g_key_file ])) {
+						$g_key_sub = File[ $g_key_file ]
+					} else {
+						$g_key_sub = undef
+					}
+				} else {
+					$g_key_sub = undef
+				}
+				if (!defined(Exec["rpmkey_add_${g_key}"])) {
 					exec { "rpmkey_add_${g_key}":
 						path        => '/sbin:/bin:/usr/sbin:/usr/bin',
 						command     => "rpm --import ${g_key}",
 						refreshonly => true,
-						subscribe   => File[ $g_key ],
+						subscribe   => $g_key_sub,
 						before      => Yumrepo[ $name ]
 					}
 				}
