@@ -1,5 +1,5 @@
 #
-# This class installs the Hewlett Packard Enterprise Management Component Pack repo
+# This class installs the Hewlett Packard Enterprise Management Component Pack (MCP) repo
 #
 class yum::repo::hpe::mcp (
 	Enum['present','absent'] $ensure = 'present',
@@ -14,7 +14,7 @@ class yum::repo::hpe::mcp (
 	}
 
 	$repo_url = "${baseurl}/${distroname}/\$releasever/${facts['os']['architecture']}/${version}"
-	
+
 	yum::managed_yumrepo { "${yum::repo::hpe::repo_basename}-${repo_name}":
 			ensure        => $ensure,
 			descr         => 'HPE - Management Component Pack',
@@ -22,6 +22,6 @@ class yum::repo::hpe::mcp (
 			enabled       => 1,
 			gpgcheck      => 0,
 			gpgkey        => 'present',
-	    gpgkey_source => $yum::repo::hpe::gpg_keys
+			gpgkey_source => $yum::repo::hpe::gpg_keys
 	}
 }
