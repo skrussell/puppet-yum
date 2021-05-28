@@ -4,7 +4,7 @@
 class yum::repo::hpe::mcp (
 	Enum['present','absent'] $ensure = 'present',
 	String $repo_name = 'mcp',
-	Stdlib::HTTPUrl $baseurl = "${yum::repo::hpe}/${repo_name}",
+	Stdlib::HTTPUrl $baseurl = "${yum::repo::hpe::baseurl}/${repo_name}",
 	Enum['current','12.05','11.30','11.21','11.05','10.62','10.50','10.40','10.20'] $version = 'current'
 ) inherits yum::repo::hpe {
 	$distroname = $facts['os']['name'] ? {

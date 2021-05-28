@@ -5,7 +5,7 @@ class yum::repo::hpe::spp (
 	Pattern[/\A(G7|Gen(1[0-9]|[89]))\z/] $hw_gen,
 	Enum['present','absent'] $ensure = 'present',
 	String $repo_name = 'spp',
-	Stdlib::HTTPUrl $baseurl = "${yum::repo::hpe}/${repo_name}-${hw_gen.downcase}",
+	Stdlib::HTTPUrl $baseurl = "${yum::repo::hpe::baseurl}/${repo_name}-${hw_gen.downcase}",
 	String $version = 'current'
 ) inherits yum::repo::hpe {
 	$distroname = $facts['os']['name'] ? {
